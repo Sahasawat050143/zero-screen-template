@@ -2,30 +2,37 @@ import React, { useState } from "react";
 
 export const CollapseForm = () => {
     const [inputList, setInputList] = useState([])
-    // const [inputName, setInputName] = useState("")
-    // const [titleForm, setTitleForm] = useState("")
     const [value, setValue] = useState({
         inputName: "",
         title: ""
     })
+    const [errorMsg, setErrorMsg] = useState("")
 
     const handleChange  = (e) => {
-        setValue({
-            [e.target.name]: e.target.value,
-        })
+      if(e.target.name == "inputName" && e.target.value != ""){
+        setErrorMsg("")
+      } else {
+        setErrorMsg("Input must have name!")
+      }
+      setValue({
+        [e.target.name]: e.target.value,
+      })
     }
 
     const onAddInputClick = (e) => {
         e.preventDefault();
 
+        if(value.inputName != ""){
         setInputList(prev => {
             return [...prev, value.inputName]
         })
 
         setValue({inputName: ""})
+      }else {
+        setErrorMsg("Input must have name!")
+      }
     }
 
-    console.log('inputList', inputList);
   return (
     <form onSubmit={onAddInputClick}>
       <div className="mb-3">
@@ -33,6 +40,7 @@ export const CollapseForm = () => {
           Title
         </label>
         <input
+          placeholder="title"
           type="text"
           className="form-control"
           id="title"
@@ -41,38 +49,41 @@ export const CollapseForm = () => {
           onChange={handleChange}
         />
       </div>
-      <div className="p-3 border shadow">
-        <div className="p-3 border mb-3">
+
+      <section id="addInputForm" className="p-3 border">
+        <div className="p-3 border mb-3" style={{backgroundColor: "#F3F3F3"}}>
             <p className="fw-bold">List input in form</p>
             <div className="row">
                 {inputList.length > 0 && inputList.map(item => (
-                    <div className="col-4">
-                        <div className="card p-2 bg-info text-light">{item}</div>
+                    <div className="col-4 mb-3">
+                        <div className="card p-2 bg-primary text-light text-center">{item}</div>
                     </div>
                 ))}
             </div>
         </div>
         <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
-                Input Name
+            <label className="form-label d-flex align-items-end">
+              <div className="text-danger me-2 ">*</div> Input Name
             </label>
             <div className="row">
                 <div className="col-10">
                 <input
+                    placeholder="input name"
                     name="inputName"
                     type="text"
-                    className="form-control"
+                    className={`form-control ${errorMsg !== "" ? "border border-danger" : ""}`}
                     id="inputName"
                     value={value.inputName}
                     onChange={handleChange}
                 />
+                {errorMsg !== "" && <div id="inputNameError" class="form-text text-danger">{errorMsg}</div>}
                 </div>
                 <div className="col-2">
                 <button className="btn btn-primary" type="submit">+ Add Input</button>
                 </div>
             </div>
         </div>
-      </div>
+      </section>
     </form>
   );
 };
