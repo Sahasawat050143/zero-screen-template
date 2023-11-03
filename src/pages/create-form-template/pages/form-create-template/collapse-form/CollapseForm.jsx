@@ -66,7 +66,7 @@ export const CollapseForm = () => {
               <div className="text-danger me-2 ">*</div> Input Name
             </label>
             <div className="row">
-                <div className="col-10">
+                <div className="col-12 col-md-9">
                 <input
                     placeholder="input name"
                     name="inputName"
@@ -78,7 +78,7 @@ export const CollapseForm = () => {
                 />
                 {errorMsg !== "" && <div id="inputNameError" class="form-text text-danger">{errorMsg}</div>}
                 </div>
-                <div className="col-2">
+                <div className="col-12 col-md-3">
                 <button className="btn btn-primary" type="submit">+ Add Input</button>
                 </div>
             </div>
